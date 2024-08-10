@@ -30,20 +30,20 @@ git clone https://github.com/SantiYami/CoPaDocument.git
 cd CoPaDocument
 ```
 
-1. Crea un entorno virtual (opcional pero recomendado):
+2. Crea un entorno virtual (opcional pero recomendado):
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate  # En Windows usa: .venv\Scripts\activate
 ```
 
-1. Instala las dependencias:
+3. Instala las dependencias:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-1. Instala la aplicación (opcional, para ejecutar desde cualquier lugar):
+4. Instala la aplicación (opcional, para ejecutar desde cualquier lugar):
 
 ```bash
 pip install .
