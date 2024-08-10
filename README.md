@@ -69,7 +69,7 @@ python -m app.main
 
 ### Características adicionales
 
-Agregar soporte para nuevos tipos de documentos: Para añadir un nuevo tipo de documento, solo necesitas crear un nuevo manejador que implemente la interfaz DocumentHandler y añadirlo a la fábrica (DocumentHandlerFactory) en app/handlers/factory.py.
+Agregar soporte para nuevos tipos de documentos: Para añadir un nuevo tipo de documento, solo necesitas crear un nuevo manejador que implemente la interfaz ]]`DocumentHandler` y añadirlo a la fábrica (`DocumentHandlerFactory`) en `app/handlers/factory.py`.
 
 ## Contribuciones
 
