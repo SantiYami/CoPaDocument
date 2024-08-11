@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinterdnd2 import DND_FILES, TkinterDnD
 from .utils.file_utils import get_file_info
+from .utils.format_utils import format_size
 
 def run_app():
     root = TkinterDnD.Tk()
@@ -52,10 +53,10 @@ def run_app():
             table.delete(item)
 
         for info in document_info:
-            table.insert("", "end", values=(info["path"], info.get("pages", "-"), info["size"]))
+            table.insert("", "end", values=(info["path"], info.get("pages", "-"), info["format_size"]))
 
         # Display totals
-        table.insert("", "end", values=("Total", file_count, f"{total_size / 1024:.2f} KB"))
+        table.insert("", "end", values=("Total", file_count, f"{format_size(total_size)}"))
 
     def on_drop(event):
         directory = event.data.strip('{}')
