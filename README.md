@@ -5,21 +5,34 @@ CoPaDocument es una aplicación de escritorio ligera para visualizar informació
 
 ## Características
 
-- Arrastrar y soltar: Simplemente arrastra y suelta carpetas o archivos en la interfaz para ver la información.
+- **Arrastrar y soltar:** Simplemente arrastra y suelta carpetas o archivos en la interfaz para ver la información.
 
-- Visualización de información: Muestra la ruta, tamaño y cantidad de páginas para archivos PDF y el tamaño y cantidad de archivos para archivos Excel.
+- **Visualización de información:** Muestra la ruta, tamaño y cantidad de páginas para archivos PDF; tamaño, cantidad de archivos y detalles para archivos Excel; y detalles de las imágenes como dimensiones y número de canales.
 
-- Extensible: Diseñada para que sea fácil agregar soporte para nuevos tipos de documentos.
-Interfaz gráfica amigable: Interfaz de usuario simple y limpia construida con `Tkinter` y `TkinterDnD`.
+- **Extensible:** Diseñada para que sea fácil agregar soporte para nuevos tipos de documentos.
+
+- **Interfaz gráfica amigable:** Interfaz de usuario simple y limpia construida con `Tkinter` y `TkinterDnD`.
 
 ## Requisitos
 
 - **Python 3.8 o superior**
 - **Dependencias**:
+  - `chardet` (para detectar el encoding de archivos CSV)
+  - `defusedxml` (para la seguridad en el procesamiento de XML)
+  - `et-xmlfile` (para leer archivos XML)
+  - `numpy` (para operaciones matemáticas eficientes)
+  - `odfpy` (para manejar archivos ODS)
+  - `opencv-python` (para manejar imágenes)
+  - `openpyxl` (para manejar archivos XLSX)
+  - `pandas` (para manejo avanzado de datos)
   - `PyPDF2` (para manejar archivos PDF)
-  - `openpyxl` (para manejar archivos Excel)
+  - `python-dateutil` (para el manejo de fechas)
+  - `pytz` (para manejo de zonas horarias)
+  - `pyxlsb` (para leer archivos XLSB)
+  - `six` (para compatibilidad entre Python 2 y 3)
   - `tkinterdnd2` (para funcionalidad de arrastrar y soltar)
-  - `tkinter` (para la interfaz gráfica)
+  - `tzdata` (para datos de zona horaria)
+  - `xlrd` (para leer archivos XLS)
 
 ## Instalación en local
 
@@ -69,7 +82,7 @@ python -m app.main
 
 ### Características adicionales
 
-- **Agregar soporte para nuevos tipos de documentos:** Para añadir un nuevo tipo de documento, solo necesitas crear un nuevo manejador que implemente la interfaz `DocumentHandler` y añadirlo a la fábrica (`DocumentHandlerFactory`) en `app/handlers/factory.py`.
+- **Agregar soporte para nuevos tipos de documentos:** Para añadir un nuevo tipo de documento, solo necesitas crear un nuevo manejador que implemente la interfaz `DocumentHandler` y añadirlo a la fábrica (`DocumentHandlerFactory`) en `app/handlers/base/document_handler_factory.py`.
 
 ## Contribuciones
 
