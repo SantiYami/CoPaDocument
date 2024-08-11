@@ -1,7 +1,18 @@
 import os
-from app.handlers.base.document_handler_factory import DocumentHandlerFactory
+from typing import List, Tuple, Optional, Union
+from ..handlers.base.document_handler_factory import DocumentHandlerFactory
 
-def get_file_info(paths, factory=None):
+def get_file_info(paths: Union[str, List[str]], factory: Optional[DocumentHandlerFactory] = None) -> Tuple[List[dict], int, int]:
+    """
+    Retrieves information about files, including their size and count.
+
+    Args:
+        paths (Union[str, List[str]]): A directory path or a list of file paths.
+        factory (Optional[DocumentHandlerFactory]): An instance of DocumentHandlerFactory. If None, a new instance is created.
+
+    Returns:
+        Tuple[List[dict], int, int]: A tuple containing a list of file information dictionaries, total size of files, and count of files processed.
+    """
     if factory is None:
         factory = DocumentHandlerFactory()
 
@@ -20,7 +31,7 @@ def get_file_info(paths, factory=None):
         file_extension = os.path.splitext(file_path)[1].lower()
         try:
             handler = factory.get_handler(file_extension)
-            info = handler.get_info(file_path)
+            info = handler.get_info(str(file_path))
             if info:
                 document_info.append(info)
                 total_size += info["size"]
@@ -30,10 +41,21 @@ def get_file_info(paths, factory=None):
 
     return document_info, total_size, file_count
 
-def _get_files_from_directory(directory):
-    """Helper function to retrieve all files in a directory recursively."""
-    files = []
-    for root, dirs, file_names in os.walk(directory):
-        for file_name in file_names:
-            files.append(os.path.join(root, file_name))
-    return files
+def _get_files_from_directory(directory: str) -> List[str]:
+    """
+    Helper function to retrieve all files in a directory recursively.
+
+    Args:
+        directory (str): The directory path.
+
+    Returns:
+        List[str]: A list of file paths.
+    """
+    if not os.path.isdir(directory):
+        raise ValueError(f"The path {directory} is not a valid directory.")
+    
+    return [
+        os.path.join(root, file_name)
+        for root, _, file_names in os.walk(directory)
+        for file_name in file_names
+    ]
