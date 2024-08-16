@@ -10,13 +10,14 @@ class DocumentHandler(ABC):
     """
 
     @abstractmethod
-    def get_info(self, file_path: str) -> Optional[Dict[str, str]]:
+    def get_info(self, file_path: str, filters: Dict[str, bool]) -> Optional[Dict[str, str]]:
         """
         Abstract method to be implemented by subclasses for extracting 
         specific information from the document.
 
         Args:
             file_path (str): The path to the document.
+            filters (Dict[str, bool]): A dictionary with filters that indicate what information to extract.
 
         Returns:
             Dict[str, str]: A dictionary containing document-specific information.
