@@ -8,13 +8,14 @@ class ImageHandler(DocumentHandler):
     number of channels.
     """
 
-    def get_info(self, file_path: str) -> Optional[Dict[str, str]]:
+    def get_info(self, file_path: str, filters: Dict[str, bool]) -> Optional[Dict[str, str]]:
         """
         Extracts information from an image file, including file details, width, height, 
         and number of channels.
 
         Args:
             file_path (str): The path to the image file.
+            filters (Dict[str, bool]): A dictionary with filters that indicate what information to extract.
 
         Returns:
             Optional[Dict[str, str]]: A dictionary with file information including width, 
@@ -23,18 +24,17 @@ class ImageHandler(DocumentHandler):
         try:
             file_info = self.extract_file_info(file_path)
             
-            # Leer la imagen
-            image = cv2.imread(file_path)
-            if image is None:
-                raise ValueError("Cannot open image file.")
-            
-            height, width, channels = image.shape
-            
-            file_info.update({
-                "width": width,
-                "height": height,
-                "channels": channels
-            })
+            if any(filters.get(key, False) for key in ['width', 'height', 'channels']):
+                image = cv2.imread(file_path)
+                height, width, channels = image.shape
+
+                if filters.get('width', False):
+                    file_info.update({"width": width})
+                if filters.get('height', False):
+                    file_info.update({"height": height})
+                if filters.get('channels', False):
+                    file_info.update({"channels": channels})
+
             return file_info
         except FileNotFoundError:
             print(f"File not found: {file_path}")

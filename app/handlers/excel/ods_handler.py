@@ -9,13 +9,14 @@ class ODSHandler(DocumentHandler):
     the number of sheets in the ODS document.
     """
 
-    def get_info(self, file_path: str) -> Optional[Dict[str, str]]:
+    def get_info(self, file_path: str, filters: Dict[str, bool]) -> Optional[Dict[str, str]]:
         """
         Extracts information from an ODS file, including file details and the number of 
         sheets in the document.
 
         Args:
             file_path (str): The path to the ODS file.
+            filters (Dict[str, bool]): A dictionary with filters that indicate what information to extract.
 
         Returns:
             Optional[Dict[str, str]]: A dictionary with file information including the 
@@ -24,13 +25,11 @@ class ODSHandler(DocumentHandler):
         try:
             file_info = self.extract_file_info(file_path)
             
-            # Cargar el documento ODS
-            document = load(file_path)
-            num_sheets = len(document.spreadsheet.getElementsByType(Table))
+            if filters.get('sheets', False):
+                document = load(file_path)
+                num_sheets = len(document.spreadsheet.getElementsByType(Table))
+                file_info.update({"sheets": num_sheets})
             
-            file_info.update({
-                "sheets": num_sheets
-            })
             return file_info
         except FileNotFoundError:
             print(f"File not found: {file_path}")

@@ -68,12 +68,13 @@ class DocumentHandlerFactory:
         """
         self._handlers[extension.lower()] = handler_class
 
-    def get_handler(self, file_extension: str) -> Type:
+    def get_handler(self, file_extension: str, filters: Dict[str, bool] = None) -> Type:
         """
         Retrieves the handler class for a given file extension.
         
         Args:
             file_extension (str): The file extension to retrieve the handler for.
+            filters (Dict[str, bool], optional): Filters to be applied by the handler.
         
         Returns:
             Type: The handler class associated with the file extension.
@@ -84,7 +85,7 @@ class DocumentHandlerFactory:
         handler_class = self._handlers.get(file_extension.lower())
         if not handler_class:
             raise HandlerNotFoundError(f"No handler registered for extension: {file_extension}")
-        return handler_class()
+        return handler_class(filters=filters) if filters else handler_class()
 
     def get_supported_extensions(self) -> List[str]:
         """
