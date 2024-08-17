@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QGroupBox, QVBoxLayout, QCheckBox
+from PySide6.QtWidgets import QGroupBox, QVBoxLayout, QCheckBox
 
 class FilterPanel(QGroupBox):
     def __init__(self, parent=None):
@@ -22,8 +22,11 @@ class FilterPanel(QGroupBox):
 
     def get_filters(self):
         return {
-            "pdf_pages": self.pdf_pages_checkbox.isChecked(),
-            "xls_sheets": self.xls_sheets_checkbox.isChecked(),
-            "csv_rows_cols": self.csv_rows_cols_checkbox.isChecked(),
-            "image_info": self.image_info_checkbox.isChecked(),
+            "pages": self.pdf_pages_checkbox.isChecked(),
+            "sheets": self.xls_sheets_checkbox.isChecked(),
+            "rows": self.csv_rows_cols_checkbox.isChecked(),
+            "cols": self.csv_rows_cols_checkbox.isChecked(),
+            "width": self.image_info_checkbox.isChecked(),
+            "height": self.image_info_checkbox.isChecked(),
+            "channels": self.image_info_checkbox.isChecked(),
         }

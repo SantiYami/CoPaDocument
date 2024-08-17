@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QWidget
 from .table_view import TableView
 from .filters import FilterPanel
 from .drag_and_drop import DragAndDropWidget
@@ -8,14 +8,17 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("CoPaDocument - Document Info Viewer")
         self.setGeometry(100, 100, 800, 600)
+        
+        self.init_ui()
 
+    def init_ui(self):
         # Configurar el layout principal
         main_layout = QVBoxLayout()
 
         # Crear y agregar los componentes principales
         self.table_view = TableView(self)
         self.filter_panel = FilterPanel(self)
-        self.drag_and_drop = DragAndDropWidget(self, self.update_table)
+        self.drag_and_drop = DragAndDropWidget(self, self.update_table, self.filter_panel)
 
         main_layout.addWidget(self.filter_panel)
         main_layout.addWidget(self.drag_and_drop)
