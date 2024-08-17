@@ -8,19 +8,27 @@ class ImageHandler(DocumentHandler):
     number of channels.
     """
 
-    def get_info(self, file_path: str, filters: Dict[str, bool]) -> Optional[Dict[str, str]]:
+    def get_info(self, file_path: str, filters: Optional[Dict[str, bool]] = None) -> Optional[Dict[str, str]]:
         """
         Extracts information from an image file, including file details, width, height, 
         and number of channels.
 
         Args:
             file_path (str): The path to the image file.
-            filters (Dict[str, bool]): A dictionary with filters that indicate what information to extract.
+            filters (Optional[Dict[str, bool]]): Optional dictionary specifying which details to extract.
 
         Returns:
             Optional[Dict[str, str]]: A dictionary with file information including width, 
             height, and number of channels, or None if an error occurs.
         """
+        # Set default filters if not provided
+        if filters is None:
+            filters = {
+                "width": False,
+                "height": False,
+                "channels": False
+            }
+
         try:
             file_info = self.extract_file_info(file_path)
             

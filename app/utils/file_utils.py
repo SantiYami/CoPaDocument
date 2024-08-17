@@ -1,13 +1,14 @@
 import os
-from typing import List, Tuple, Optional, Union
+from typing import List, Dict, Tuple, Optional, Union
 from ..handlers.base.document_handler_factory import DocumentHandlerFactory
 
-def get_file_info(paths: Union[str, List[str]], factory: Optional[DocumentHandlerFactory] = None) -> Tuple[List[dict], int, int]:
+def get_file_info(paths: Union[str, List[str]], filters: Optional[Dict[str, bool]] = None, factory: Optional[DocumentHandlerFactory] = None) -> Tuple[List[dict], int, int]:
     """
     Retrieves information about files, including their size and count.
 
     Args:
         paths (Union[str, List[str]]): A directory path or a list of file paths.
+        filters (Optional[Dict[str, bool]]): Filters to apply when extracting information.
         factory (Optional[DocumentHandlerFactory]): An instance of DocumentHandlerFactory. If None, a new instance is created.
 
     Returns:
@@ -31,7 +32,7 @@ def get_file_info(paths: Union[str, List[str]], factory: Optional[DocumentHandle
         file_extension = os.path.splitext(file_path)[1].lower()
         try:
             handler = factory.get_handler(file_extension)
-            info = handler.get_info(str(file_path))
+            info = handler.get_info(str(file_path), filters=filters)
             if info:
                 document_info.append(info)
                 total_size += info["size"]

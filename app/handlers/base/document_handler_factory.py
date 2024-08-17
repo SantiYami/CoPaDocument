@@ -5,7 +5,7 @@ from ..excel.ods_handler import ODSHandler
 from ..csv.csv_handler import CSVHandler
 from ..img.image_handler import ImageHandler
 
-from typing import Type, Dict, List
+from typing import Type, Dict, List, Optional
 from ...constants.file_extensions import PDF_EXTENSION, XLSX_EXTENSION, XLS_EXTENSION, ODS_EXTENSION, CSV_EXTENSION, IMAGE_EXTENSIONS
 
 
@@ -68,7 +68,7 @@ class DocumentHandlerFactory:
         """
         self._handlers[extension.lower()] = handler_class
 
-    def get_handler(self, file_extension: str, filters: Dict[str, bool] = None) -> Type:
+    def get_handler(self, file_extension: str, filters: Optional[Dict[str, bool]] = None) -> Type:
         """
         Retrieves the handler class for a given file extension.
         
