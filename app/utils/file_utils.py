@@ -1,5 +1,7 @@
 import os
+from collections import defaultdict
 from typing import List, Dict, Tuple, Optional, Union
+from ..constants.file_extensions import FILE_PROPERTIES
 from ..handlers.base.document_handler_factory import DocumentHandlerFactory
 
 def get_file_info(paths: Union[str, List[str]], filters: Optional[Dict[str, bool]] = None, factory: Optional[DocumentHandlerFactory] = None) -> Tuple[List[dict], int, int]:
@@ -60,3 +62,41 @@ def _get_files_from_directory(directory: str) -> List[str]:
         for root, _, file_names in os.walk(directory)
         for file_name in file_names
     ]
+
+def process_files_info(files_info):
+    document_info, total_size, file_count = files_info
+    aggregated_info = {}
+    for info in document_info:
+        file_type = info['extension']
+        properties = FILE_PROPERTIES.get(file_type, [])
+        
+        key = 'directory' if not any(prop in info for prop in properties) else 'path'
+        identifier = info[key]
+        
+        if identifier not in aggregated_info:
+            aggregated_info[identifier] = {
+                'directory': info['directory'],
+                'type': file_type,
+                'count': 0,
+                'total_size': 0
+            }
+            aggregated_info[identifier].update({prop: info.get(prop) for prop in properties})
+        
+        aggregated_info[identifier]['count'] += 1
+        aggregated_info[identifier]['total_size'] += info['size']
+
+    return list(aggregated_info.values()), total_size, file_count
+
+def group_by_properties():
+    """
+    Agrupa extensiones por conjunto de propiedades.
+
+    Returns:
+        dict: Diccionario de conjuntos de propiedades a extensiones.
+    """
+    properties_to_extensions = defaultdict(list)
+
+    # Llenar el defaultdict usando una comprensión de lista
+    _ = [properties_to_extensions[tuple(sorted(props))].append(ext) for ext, props in FILE_PROPERTIES.items()]
+
+    return dict(properties_to_extensions)

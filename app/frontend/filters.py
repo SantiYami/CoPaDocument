@@ -1,32 +1,32 @@
 from PySide6.QtWidgets import QGroupBox, QVBoxLayout, QCheckBox
+from collections import defaultdict
+from ..constants.file_extensions import PDF_EXTENSION
+from ..utils.file_utils import group_by_properties
 
 class FilterPanel(QGroupBox):
     def __init__(self, parent=None):
         super().__init__("Filters", parent)
         layout = QVBoxLayout()
 
-        self.pdf_pages_checkbox = QCheckBox("PDF Pages", self)
-        self.pdf_pages_checkbox.setChecked(True)
-        layout.addWidget(self.pdf_pages_checkbox)
+        # Agrupar extensiones por conjunto de propiedades
+        self.property_groups = group_by_properties()
 
-        self.xls_sheets_checkbox = QCheckBox("Excel Sheets", self)
-        layout.addWidget(self.xls_sheets_checkbox)
-
-        self.csv_rows_cols_checkbox = QCheckBox("CSV Rows and Columns", self)
-        layout.addWidget(self.csv_rows_cols_checkbox)
-
-        self.image_info_checkbox = QCheckBox("Image Info (Width, Height, Channels)", self)
-        layout.addWidget(self.image_info_checkbox)
+        # Crear checkboxes para cada grupo de propiedades
+        self.checkboxes = {}
+        for properties, extensions in self.property_groups.items():
+            checkbox_text = f"{', '.join(properties).capitalize()} ({', '.join(extensions)})"
+            checkbox = QCheckBox(checkbox_text, self)
+            if PDF_EXTENSION in extensions:
+                checkbox.setChecked(True)
+            layout.addWidget(checkbox)
+            self.checkboxes[checkbox] = properties
 
         self.setLayout(layout)
 
     def get_filters(self):
-        return {
-            "pages": self.pdf_pages_checkbox.isChecked(),
-            "sheets": self.xls_sheets_checkbox.isChecked(),
-            "rows": self.csv_rows_cols_checkbox.isChecked(),
-            "cols": self.csv_rows_cols_checkbox.isChecked(),
-            "width": self.image_info_checkbox.isChecked(),
-            "height": self.image_info_checkbox.isChecked(),
-            "channels": self.image_info_checkbox.isChecked(),
-        }
+        filters = {}
+        for checkbox, properties in self.checkboxes.items():
+            is_checked = checkbox.isChecked()
+            for prop in properties:
+                filters[prop] = is_checked
+        return filters

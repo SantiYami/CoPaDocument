@@ -2,13 +2,14 @@ from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QWidget
 from .table_view import TableView
 from .filters import FilterPanel
 from .drag_and_drop import DragAndDropWidget
+from ..utils.file_utils import process_files_info
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("CoPaDocument - Document Info Viewer")
         self.setGeometry(100, 100, 800, 600)
-        
+
         self.init_ui()
 
     def init_ui(self):
@@ -30,4 +31,5 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(central_widget)
 
     def update_table(self, files_info):
-        self.table_view.update_table(files_info)
+        processed_info = process_files_info(files_info)
+        self.table_view.update_table(processed_info)
