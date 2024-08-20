@@ -11,16 +11,29 @@ class TableView(QTableWidget):
     def update_table(self, files_info):
         document_info, total_size, file_count = files_info
 
-        self.setRowCount(0)  # Clear the table
+        self.setRowCount(0)  # Limpiar la tabla
 
         for info in document_info:
-            row_position = self.rowCount()
-            self.insertRow(row_position)
-            self.setItem(row_position, 0, QTableWidgetItem(info["path"]))
-            self.setItem(row_position, 1, QTableWidgetItem(str(info.get("pages", "-"))))
-            self.setItem(row_position, 2, QTableWidgetItem(info["format_size"]))
+            if info['count'] > 1:
+                # Mostrar un resumen del directorio
+                row_position = self.rowCount()
+                self.insertRow(row_position)
+                self.setItem(row_position, 0, QTableWidgetItem(info['directory']))
+                self.setItem(row_position, 1, QTableWidgetItem(f"{info['count']} files"))
+                self.setItem(row_position, 2, QTableWidgetItem(format_size(info['total_size'])))
+            else:
+                # Mostrar detalles de cada archivo en el directorio
+                for file_info in info['files']:
+                    row_position = self.rowCount()
+                    self.insertRow(row_position)
+                    self.setItem(row_position, 0, QTableWidgetItem(file_info['path']))
+                    # Mostrar solo las propiedades relevantes
+                    pages = file_info.get('pages', '-')
+                    size = file_info['size']  # Ahora usamos el tamaño del archivo individual
+                    self.setItem(row_position, 1, QTableWidgetItem(str(pages)))
+                    self.setItem(row_position, 2, QTableWidgetItem(format_size(size)))
 
-        # Display totals
+        # Mostrar totales
         row_position = self.rowCount()
         self.insertRow(row_position)
         self.setItem(row_position, 0, QTableWidgetItem("Total"))
@@ -29,3 +42,4 @@ class TableView(QTableWidget):
 
         # Ajustar tamaño de las columnas
         self.resizeColumnsToContents()
+

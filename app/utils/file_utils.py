@@ -66,26 +66,43 @@ def _get_files_from_directory(directory: str) -> List[str]:
 def process_files_info(files_info):
     document_info, total_size, file_count = files_info
     aggregated_info = {}
+
     for info in document_info:
         file_type = info['extension']
         properties = FILE_PROPERTIES.get(file_type, [])
         
+        # Decidir si usar path o directory como identificador
         key = 'directory' if not any(prop in info for prop in properties) else 'path'
         identifier = info[key]
         
+        # Inicializar el registro si no existe
         if identifier not in aggregated_info:
             aggregated_info[identifier] = {
                 'directory': info['directory'],
                 'type': file_type,
                 'count': 0,
-                'total_size': 0
+                'total_size': 0,
+                'files': []  # Aquí guardaremos la lista de archivos
             }
-            aggregated_info[identifier].update({prop: info.get(prop) for prop in properties})
         
+        # Agregar la información del archivo actual
+        aggregated_info[identifier]['files'].append(
+            info
+        )
+
         aggregated_info[identifier]['count'] += 1
         aggregated_info[identifier]['total_size'] += info['size']
 
-    return list(aggregated_info.values()), total_size, file_count
+    # Convertir a una lista para ser utilizada por update_table
+    aggregated_list = [{
+        'directory': agg_info['directory'],
+        'type': agg_info['type'],
+        'count': agg_info['count'],
+        'total_size': agg_info['total_size'],
+        'files': agg_info['files']
+    } for agg_info in aggregated_info.values()]
+
+    return aggregated_list, total_size, file_count
 
 def group_by_properties():
     """
