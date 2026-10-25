@@ -1,4 +1,4 @@
-from PyPDF2 import PdfReader
+from pypdf import PdfReader
 from typing import Dict, Optional
 from ..base.document_handler import DocumentHandler
 

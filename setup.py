@@ -19,7 +19,7 @@ setup(
         "opencv-python",
         "openpyxl",
         "pandas",
-        "PyPDF2",
+        "pypdf",
         "python-dateutil",
         "pytz",
         "pyxlsb",
