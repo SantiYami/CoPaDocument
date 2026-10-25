@@ -25,7 +25,7 @@ CoPaDocument es una aplicación de escritorio ligera para visualizar informació
   - `opencv-python` (para manejar imágenes)
   - `openpyxl` (para manejar archivos XLSX)
   - `pandas` (para manejo avanzado de datos)
-  - `PyPDF2` (para manejar archivos PDF)
+  - `pypdf` (para manejar archivos PDF)
   - `python-dateutil` (para el manejo de fechas)
   - `pytz` (para manejo de zonas horarias)
   - `pyxlsb` (para leer archivos XLSB)
